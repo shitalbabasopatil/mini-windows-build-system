@@ -1,0 +1,46 @@
+graph TD
+    subgraph Client_Layer [Client Interface]
+        User([Developer / REST Client])
+        Curl[Curl / Postman]
+        PsScript[test_build.ps1]
+    end
+
+    subgraph API_Layer [API & Orchestration]
+        FastAPI[WinBuild API - FastAPI]
+        Queue[In-Memory Job Queue]
+        Registry[(SQLite Build Registry)]
+    end
+
+    subgraph Worker_Layer [Build Worker Engine]
+        Worker[Worker Lifecycle Manager]
+        Git[Git Service]
+        DockerSDK[Docker SDK for Python]
+    end
+
+    subgraph Runtime_Layer [Windows Container Runtime]
+        Engine[Docker Engine - Windows Mode]
+        Container[Windows Server Core Container]
+        VMS[Hyper-V Isolation]
+    end
+
+    subgraph Storage_Layer [Persistent Storage]
+        FS[Host Filesystem - ./storage]
+        Artifacts[Build Artifacts]
+        Logs[Build Logs]
+    end
+
+    User -->|Submit Build| FastAPI
+    PsScript -->|Invoke REST| FastAPI
+    FastAPI -->|Store Metadata| Registry
+    FastAPI -->|Enqueue Task| Queue
+    Queue -->|Pop Task| Worker
+    Worker -->|Clone Repo| Git
+    Worker -->|Orchestrate| DockerSDK
+    DockerSDK -->|Manage Pipe| Engine
+    Engine -->|Launch| Container
+    Container -->|Mount Volume| FS
+    FS -->|Store| Artifacts
+    Container -->|Stream Logs| Worker
+    Worker -->|Persist Logs| Registry
+    Registry -->|Query Logs| FastAPI
+    FastAPI -->|Stream Response| User
