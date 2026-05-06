@@ -13,6 +13,7 @@ WinBuild Cloud is a high-performance build orchestration system engineered for *
 ## 📖 Essential Documentation
 - **[Detailed Case Study](docs/CASE_STUDY.md)**: Engineering challenges, architectural decisions, and impact analysis.
 - **[Full Architecture Diagram](docs/architecture.mmd)**: Comprehensive Mermaid visualization of the system components.
+- **[Build Sequence Diagram](docs/sequence.mmd)**: Detailed interaction flow of a build job.
 - **[License](LICENSE)**: Apache 2.0 - Licensed for professional and commercial use.
 
 ---
@@ -111,6 +112,10 @@ curl -X POST "http://localhost:8000/build" \
 ### Fetch Real-Time Logs
 `GET /build/{id}/logs`
 
+### Download Build Artifact
+`GET /build/{id}/artifact`
+Returns a ZIP file containing the published binaries.
+
 ---
 
 ## 🧪 Testing with the Sample App
@@ -142,7 +147,8 @@ We have included a pre-configured .NET 8 sample application and a test script to
     dotnet build
     dotnet publish -c Release -o out
     ```
-6.  **Cleanup**: The temporary container is destroyed, leaving only the artifacts and logs in local storage.
+6.  **Artifact Zipping**: The system identifies the `out` folder and zips it for download.
+7.  **Cleanup**: The temporary container is destroyed, leaving only the artifacts and logs in local storage.
 
 ---
 
@@ -161,13 +167,14 @@ We have included a pre-configured .NET 8 sample application and a test script to
 - **Process Isolation**: Uses Hyper-V isolation by default on Windows 11.
 - **Resource Constraints**: Each container is scoped to its mount point.
 - **Sanitization**: PowerShell commands are wrapped in strict string literals to prevent injection.
+- **Parallelism**: Supports multiple concurrent worker threads (default: 2) for handling high load.
 
 ---
 
 ## 📈 Roadmap & Optimization
+- [x] **Artifact Archiving**: Auto-zipping of `out/` directories.
+- [x] **Parallel Workers**: Support for multiple concurrent build agents.
 - [ ] **NanoServer Support**: Optimization for smaller footprints.
-- [ ] **Parallel Workers**: Support for multiple concurrent build agents.
-- [ ] **Artifact Archiving**: Auto-zipping of `out/` directories.
 - [ ] **Web UI**: Dashboard for visual build management.
 
 ---

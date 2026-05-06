@@ -81,6 +81,18 @@ def get_build_logs(build_id: str, db: Session = Depends(get_db)):
 def list_builds(db: Session = Depends(get_db)):
     return db.query(BuildRecord).order_by(BuildRecord.created_at.desc()).all()
 
+@app.get("/build/{build_id}/artifact")
+def download_artifact(build_id: str, db: Session = Depends(get_db)):
+    build = db.query(BuildRecord).filter(BuildRecord.build_id == build_id).first()
+    if not build or not build.artifact_path:
+        raise HTTPException(status_code=404, detail="Artifact not found")
+    
+    if not os.path.exists(build.artifact_path):
+        raise HTTPException(status_code=404, detail="Artifact file missing on disk")
+        
+    from fastapi.responses import FileResponse
+    return FileResponse(build.artifact_path, filename=f"artifact_{build_id}.zip")
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

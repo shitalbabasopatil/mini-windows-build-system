@@ -1,0 +1,39 @@
+sequenceDiagram
+    %% Copyright 2026 Shital Babaso Patil <shitalbabasopatil@gmail.com>
+    %% Author: Shital Babaso Patil
+    %% Email: shitalbabasopatil@gmail.com
+    participant U as User (REST Client)
+    participant A as FastAPI Server
+    participant Q as Job Queue
+    participant W as Worker Manager
+    participant E as Windows Executor
+    participant D as Docker Engine (Windows)
+    participant S as SQLite DB
+
+    U->>A: POST /build {repo, project, cmd}
+    A->>S: Create BuildRecord (QUEUED)
+    A->>Q: Push(build_id)
+    A-->>U: 202 Accepted {build_id}
+
+    W->>Q: Pop()
+    W->>S: Update Status (CLONING)
+    W->>E: run_build()
+    E->>E: Clone Repository
+    W->>S: Update Status (RUNNING)
+    E->>D: Run Container (Mount Source)
+    D->>D: MSBuild / Publish
+    D-->>E: Stream Logs
+    E-->>W: log_callback(line)
+    W->>S: Persist LogRecord
+    D-->>E: Exit(0)
+    E->>E: Zip Artifacts
+    W->>S: Update Status (SUCCESS)
+    W->>S: Set artifact_path
+
+    U->>A: GET /build/{id}/logs
+    A->>S: Query Logs
+    A-->>U: [Log lines...]
+
+    U->>A: GET /build/{id}/artifact
+    A->>S: Get artifact_path
+    A-->>U: Download zip

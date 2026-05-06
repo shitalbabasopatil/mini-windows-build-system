@@ -92,9 +92,32 @@ class WindowsExecutor:
 
             if exit_code == 0:
                 log_callback(f"[{datetime.datetime.now()}] SUCCESS: Build completed successfully.")
-                # Move artifacts if they exist (assuming build_command puts them in 'out' or similar)
-                # This is a bit generic, usually user specifies -o out
-                return True
+                
+                # 3. Handle Artifacts
+                # Assuming the build_command produces artifacts in an 'out' directory
+                # We search for any 'out' or 'bin' or 'publish' folder in the src dir
+                # Or just assume the user put artifacts in a specific place.
+                # For this demo, we'll try to find an 'out' directory in the project path
+                
+                publish_out = os.path.join(src_dir, project_path.lstrip('./').replace('/', os.sep))
+                if not os.path.isdir(publish_out):
+                    publish_out = os.path.dirname(publish_out)
+                
+                # Look for 'out' folder
+                actual_out = os.path.join(publish_out, "out")
+                if not os.path.exists(actual_out):
+                    # Fallback to publish folder if 'out' not found
+                    actual_out = os.path.join(publish_out, "bin", "Release", "net8.0", "publish")
+
+                if os.path.exists(actual_out):
+                    log_callback(f"[{datetime.datetime.now()}] ZIPPING ARTIFACTS from {actual_out}...")
+                    shutil.make_archive(os.path.join(build_dir, "artifact"), 'zip', actual_out)
+                    return True
+                else:
+                    log_callback(f"[{datetime.datetime.now()}] WARNING: No artifact 'out' folder found at {actual_out}")
+                    # Even if no artifact found, if exit code was 0, we consider it success but no artifact
+                    # For strictness, we'll still return True
+                    return True
             else:
                 log_callback(f"[{datetime.datetime.now()}] FAILED: Build exited with code {exit_code}")
                 return False
@@ -103,6 +126,6 @@ class WindowsExecutor:
             log_callback(f"[{datetime.datetime.now()}] ERROR: {str(e)}")
             return False
         finally:
-            # Cleanup logic could go here if we wanted to delete src, 
-            # but usually we keep it for debugging until cleanup daemon runs.
+            # Workspace cleanup would happen here in a real production system
+            # but we keep it for now as per instructions to allow local inspection.
             pass
