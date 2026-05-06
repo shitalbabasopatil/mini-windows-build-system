@@ -3,7 +3,7 @@
 > **A Production-Grade Local Cloud Build System for Windows Containers**
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
-[![Maintainer](https://img.shields.io/badge/Maintainer-Shital%20Babaso%20Patil-orange.svg)](mailto:shitalbabasopatil@gmail.com)
+[![Author](https://img.shields.io/badge/Author-Shital%20Babaso%20Patil-orange.svg)](mailto:shitalbabasopatil@gmail.com)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20Containers-blue.svg)](https://docs.microsoft.com/en-us/virtualization/windowscontainers/)
 
 WinBuild Cloud is a high-performance build orchestration system engineered for **Windows-native CI/CD workflows**. It enables seamless building of .NET applications in isolated, Hyper-V protected Windows Server Core environments.
@@ -11,8 +11,8 @@ WinBuild Cloud is a high-performance build orchestration system engineered for *
 ---
 
 ## 📖 Essential Documentation
-- **[Detailed Case Study](CASE_STUDY.md)**: Engineering challenges, architectural decisions, and impact analysis.
-- **[Full Architecture Diagram](architecture.mmd)**: Comprehensive Mermaid visualization of the system components.
+- **[Detailed Case Study](docs/CASE_STUDY.md)**: Engineering challenges, architectural decisions, and impact analysis.
+- **[Full Architecture Diagram](docs/architecture.mmd)**: Comprehensive Mermaid visualization of the system components.
 - **[License](LICENSE)**: Apache 2.0 - Licensed for professional and commercial use.
 
 ---
@@ -171,7 +171,7 @@ We have included a pre-configured .NET 8 sample application and a test script to
 - [ ] **Web UI**: Dashboard for visual build management.
 
 ---
-## 👤 Maintainer
+## 👤 Author
 
 **Shital Babaso Patil**
 - **Email**: [shitalbabasopatil@gmail.com](mailto:shitalbabasopatil@gmail.com)

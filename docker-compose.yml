@@ -8,6 +8,9 @@ version: '3.8'
 services:
   build-server:
     build: .
+    labels:
+      author: "Shital Babaso Patil"
+      email: "shitalbabasopatil@gmail.com"
     ports:
       - "8000:8000"
     volumes:

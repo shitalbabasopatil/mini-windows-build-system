@@ -1,3 +1,7 @@
+# Copyright 2026 Shital Babaso Patil <shitalbabasopatil@gmail.com>
+# Author: Shital Babaso Patil
+# Email: shitalbabasopatil@gmail.com
+
 $apiUrl = "http://localhost:8000/build"
 $localRepoPath = (Get-Item .).FullName.Replace('\', '/')
 $repoUrl = "file:///$localRepoPath/sample_app"

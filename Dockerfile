@@ -3,6 +3,9 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 
+LABEL author="Shital Babaso Patil"
+LABEL email="shitalbabasopatil@gmail.com"
+
 # escape=`
 FROM python:3.11-windowsservercore-ltsc2022
 
