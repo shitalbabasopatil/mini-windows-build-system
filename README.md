@@ -84,7 +84,12 @@ docker-compose up --build
 
 ## 📡 API Reference
 
-### Submit a Build Job
+The platform provides a fully documented REST API using **OpenAPI 3.0**.
+
+- **Swagger UI**: [http://localhost:8000/swagger-ui](http://localhost:8000/swagger-ui)
+- **OpenAPI Spec**: [http://localhost:8000/openapi.json](http://localhost:8000/openapi.json)
+
+### Core Endpoints
 `POST /build`
 
 **Request Body:**
